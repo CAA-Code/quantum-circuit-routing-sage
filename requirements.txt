@@ -1,0 +1,5 @@
+# Runtime dependencies for SAGE-XV
+cirq==1.5.0
+networkx==3.4.2
+numpy==2.2.6
+qiskit==0.46.3
