@@ -12,7 +12,7 @@ This repository contains the reference implementation (SAGE-XV), benchmark circu
 1. **Double-Spectrum Expansion**: A joint functional that couples the time-weighted logical Laplacian ($L_l^{(\rho)}$) with the hardware Laplacian pseudoinverse ($L_p^+$):
 
 $$
-\mathcal{R}_{\rho}(\pi) = \operatorname{tr}\left(L_p^+ P_\pi L_l^{(\rho)} P_\pi^\top\right) = \sum_{r=2}^N \sum_{s=2}^n \frac{\mu_s}{\lambda_r} \left(u_r^\top P_\pi v_s\right)^2
+\mathcal{R}_{\rho}(\pi) = \mathrm{tr}(L_p^+ P_\pi L_l^{(\rho)} P_\pi^\top) = \sum_{r=2}^N \sum_{s=2}^n \frac{\mu_s}{\lambda_r} (u_r^\top P_\pi v_s)^2
 $$
 
 This separates logical communication modes ($\mu_s$), physical transport bottlenecks ($1/\lambda_r$), and their placement-dependent projection.
