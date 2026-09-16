@@ -1,53 +1,46 @@
-# SAGE-XV: Spectral-Aware Quantum Circuit Routing
+# SAGE: Structure-Aware Gate Embedding for Quantum Circuit Routing
 
-This repository contains a minimal, reproducible release of **SAGE-XV** for quantum-circuit initial placement and routing on connectivity-constrained quantum hardware.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-## Repository contents
+**SAGE** (Structure-Aware Gate Embedding) is a transparent, training-free quantum circuit routing framework that bridges the gap between global spectral placement and local dynamic routing. Unlike learned policies (e.g., reinforcement learning) or purely local search heuristics, SAGE utilizes a novel **Double-Spectrum Expansion** to explicitly couple the logical interaction graph with the physical hardware Laplacian, providing a rigorous structural prior for SWAP insertion.
 
-- `src/`: SAGE-XV routing implementation and canonical QASM input utilities.
-- `topologies/`: hardware connectivity graphs used in the benchmark release.
-- `circuits/benchmark_40/`: 40 small benchmark circuits.
-- `circuits/benchmark_46/`: 46 medium benchmark circuits.
-- `circuits/benchmark_87/`: 87 large benchmark circuits.
-- `LICENSE`: MIT License.
+This repository contains the reference implementation (SAGE-XV), benchmark circuits, device topologies, and reproducibility scripts for the paper *"Quantum Circuit Routing Beyond Learned Policies: Spectral Placement and Structural SWAP Lower Bounds."*
 
-The numbers 40, 46, and 87 denote the **number of circuit files in each benchmark set**, not the number of qubits in one circuit. The topology files are named by their physical-qubit counts: 16, 49, and 441 qubits.
+## 💡 Key Innovations
 
-## Requirements
+1. **Double-Spectrum Expansion**: A joint functional that couples the time-weighted logical Laplacian (\(L_l^{(\rho)}\)) with the hardware Laplacian pseudoinverse (\(L_p^+\)):
+   \[
+   \mathcal{R}_{\rho}(\pi) = \operatorname{tr}\left(L_p^+ P_\pi L_l^{(\rho)} P_\pi^\top\right) = \sum_{r=2}^N \sum_{s=2}^n \frac{\mu_s}{\lambda_r} \left(u_r^\top P_\pi v_s\right)^2
+   \]
+   This separates logical communication modes (\(\mu_s\)), physical transport bottlenecks (\(1/\lambda_r\)), and their placement-dependent projection.
 
-Python 3.10 or newer is recommended. Install the pinned dependencies with:
+2. **Structural SWAP Certificates**: Proves a single-layer SWAP lower bound for disjoint-gate layers (\(S_M^*(\pi) \ge \frac{1}{2}[\mathcal{R}_M(\pi) - |M|]_+\)) and a temporal multilayer extension with an explicit discount factor. These act as auditable structural guarantees for routing difficulty.
+
+3. **Training-Free Workflow**: SAGE eliminates the need for reward design, training corpora, or learned-policy inference. It generates explicit hardware-aware candidate placements via low-frequency spectral coordinates, rounds them to injective mappings, and evaluates them using a bounded dynamic router (LightSABRE-style).
+
+## 📁 Repository Structure
+
+*   `src/`: Core implementation of the SAGE-XV routing engine.
+    *   `SAGE-XV.py`: Main entry point for the routing algorithm.
+*   `topologies/`: Hardware coupling graphs used in experiments.
+    *   `grid_4x4.json`, `grid_7x7.json`, `grid_21x21.json`
+    *   `ring_49.json`, `heavy_hex_57.json`
+*   `circuits/`: QASM benchmark circuits.
+    *   `benchmark_40/`: Small/test circuits (40 files).
+    *   `benchmark_46/`: Medium/train circuits (46 files).
+    *   `benchmark_87/`: Large/train circuits (87 files).
+*   `requirements.txt`: Pinned dependencies (cirq, networkx, numpy, qiskit).
+*   `LICENSE`: MIT License.
+
+## 🚀 Installation
+
+SAGE requires **Python 3.10 or newer**.
 
 ```bash
-python -m pip install -r requirements.txt
-```
+# Clone the repository
+git clone https://github.com/CAA-Code/quantum-circuit-routing-sage.git
+cd quantum-circuit-routing-sage
 
-The release was checked with Cirq 1.5.0, NetworkX 3.4.2, NumPy 2.2.6, and Qiskit 0.46.3.
-
-## Quick start
-
-Run the built-in self-check:
-
-```bash
-python src/SAGE-XV.py --self-check
-```
-
-For a benchmark directory containing `train/` and `test/` subdirectories, route the test split on a supplied topology:
-
-```bash
-python src/SAGE-XV.py --dataset-dir path/to/dataset --topology topologies/grid_7x7_49q.json --eval-only
-```
-
-Outputs are written to the default `src/routed_output/sage_xv` directory unless `--output-dir` is supplied. The command-line interface exposes additional options for benchmark-scale experiments; run `python src/SAGE-XV.py --help` for details.
-
-## Input formats
-
-- Circuits: OpenQASM 2.0 files (`.qasm`).
-- Topologies: JSON files with the fields `num_qubits` and `edges`, where each edge is a pair of physical-qubit indices.
-
-## Notes on the benchmark sets
-
-The benchmark directories preserve the original QASM filenames, including both original and transpiled variants where present. The 40-circuit set uses a 4x4 grid (16 physical qubits), the 46-circuit set uses a 7x7 grid (49 physical qubits), and the 87-circuit set uses a 21x21 grid (441 physical qubits) in the corresponding experiments.
-
-## Citation
-
-Please cite the accompanying paper when using SAGE-XV in academic work.
+# Install dependencies
+pip install -r requirements.txt
