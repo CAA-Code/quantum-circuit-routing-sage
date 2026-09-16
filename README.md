@@ -9,13 +9,13 @@ This repository contains the reference implementation (SAGE-XV), benchmark circu
 
 ## 💡 Key Innovations
 
-1. **Double-Spectrum Expansion**: A joint functional that couples the time-weighted logical Laplacian (\(L_l^{(\rho)}\)) with the hardware Laplacian pseudoinverse (\(L_p^+\)):
-   \[
+1. **Double-Spectrum Expansion**: A joint functional that couples the time-weighted logical Laplacian ($L_l^{(\rho)}$) with the hardware Laplacian pseudoinverse ($L_p^+$):
+   $$
    \mathcal{R}_{\rho}(\pi) = \operatorname{tr}\left(L_p^+ P_\pi L_l^{(\rho)} P_\pi^\top\right) = \sum_{r=2}^N \sum_{s=2}^n \frac{\mu_s}{\lambda_r} \left(u_r^\top P_\pi v_s\right)^2
-   \]
-   This separates logical communication modes (\(\mu_s\)), physical transport bottlenecks (\(1/\lambda_r\)), and their placement-dependent projection.
+   $$
+   This separates logical communication modes ($\mu_s$), physical transport bottlenecks ($1/\lambda_r$), and their placement-dependent projection.
 
-2. **Structural SWAP Certificates**: Proves a single-layer SWAP lower bound for disjoint-gate layers (\(S_M^*(\pi) \ge \frac{1}{2}[\mathcal{R}_M(\pi) - |M|]_+\)) and a temporal multilayer extension with an explicit discount factor. These act as auditable structural guarantees for routing difficulty.
+2. **Structural SWAP Certificates**: Proves a single-layer SWAP lower bound for disjoint-gate layers ($S_M^*(\pi) \ge \frac{1}{2}[\mathcal{R}_M(\pi) - |M|]_+$) and a temporal multilayer extension with an explicit discount factor. These act as auditable structural guarantees for routing difficulty.
 
 3. **Training-Free Workflow**: SAGE eliminates the need for reward design, training corpora, or learned-policy inference. It generates explicit hardware-aware candidate placements via low-frequency spectral coordinates, rounds them to injective mappings, and evaluates them using a bounded dynamic router (LightSABRE-style).
 
