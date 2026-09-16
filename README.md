@@ -95,18 +95,6 @@ The core theoretical contribution is the **Double-Spectrum Expansion**, which co
 
 The algorithm is designed around a non-RL division of labor: **spectral analysis supplies the global placement prior, while finite search resolves local path, congestion, and gate-order decisions.**
 
-## 📝 Citation
-
-If you use this code or the SAGE framework in your research, please cite the corresponding paper:
-
-```bibtex
-@article{sage2026quantum,
-  title={Quantum Circuit Routing Beyond Learned Policies: Spectral Placement and Structural SWAP Lower Bounds},
-  author={B. Z., C. X., and M. X.},
-  journal={arXiv preprint},
-  year={2026}
-}
-```
 
 ## 📄 License
 
